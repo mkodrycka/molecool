@@ -1,9 +1,52 @@
+import numpy as np
+
 """
 functions.py
 A Python package for analyzing and visualizing xyz files.
 
 Handles the primary functions
 """
+
+
+def calculate_distance(rA, rB):
+    """Calculate the distance between two points.
+
+    Parameters
+    ----------
+    rA, rB : np.ndarray
+        The coordinates of each point.
+
+    Returns
+    -------
+    distance : float
+        The distance between the two points.
+
+    Examples
+    --------
+    >>> r1 = np.array([0, 0, 0])
+    >>> r2 = np.array([0, 0.1, 0])
+    >>> calculate_distance(r1, r2)
+    0.1
+    """
+
+    d = rA - rB
+    dist = np.linalg.norm(d)
+    return dist
+
+
+def open_pdb(f_loc):
+    with open(f_loc) as f:
+        data = f.readlines()
+    c = []
+    sym = []
+    for l in data:
+        if "ATOM" in l[0:6] or "HETATM" in l[0:6]:
+            sym.append(l[76:79].strip())
+            c2 = [float(x) for x in l[30:55].split()]
+            c.append(c2)
+    coords = np.array(c)
+    return sym, coords
+
 
 def zen(with_attribution=True):
     quote = """Beautiful is better than ugly.
@@ -27,7 +70,7 @@ def zen(with_attribution=True):
     Namespaces are one honking great idea -- let's do more of those!"""
 
     if with_attribution:
-      quote += "\n\tTim Peters"
+        quote += "\n\tTim Peters"
 
     return quote
 
