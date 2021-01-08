@@ -1,3 +1,5 @@
+import numpy as np
+
 """
 This module is for functions which perform measurements.
 """
